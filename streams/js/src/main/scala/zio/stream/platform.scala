@@ -169,6 +169,16 @@ private[stream] trait ZStreamPlatformSpecificConstructors {
   trait ZStreamConstructorPlatformSpecific extends ZStreamConstructorLowPriority1
 }
 
+/*Added read file support*/
+def readFile(path: String): ZStream[Any, Throwable, Byte] = {
+  for {
+    file <- ZIO.effect(new java.io.File(path))
+    inputStream <- ZIO.effect(new java.io.FileInputStream(file))
+  } yield {
+    ZStream.fromInputStream(inputStream)
+  }
+}
+
 private[stream] trait ZSinkPlatformSpecificConstructors
 
 private[stream] trait ZPipelinePlatformSpecificConstructors
