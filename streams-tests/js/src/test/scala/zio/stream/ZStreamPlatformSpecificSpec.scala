@@ -213,6 +213,14 @@ object ZStreamPlatformSpecificSpec extends ZIOBaseSpec {
           exit   <- run.interrupt
         } yield assert(isDone)(isFalse) &&
           assert(exit.untraced)(failsCause(containsCause(Cause.interrupt(selfId))))
+      },
+      test("readFile") {
+        for {
+          actual <- ZIO.succeed(ZStream.fromIterable(List(1, 2, 3)))
+          expected <- ZIO.succeed(ZStream.fromIterable(List(4, 5, 6)))
+        } yield {
+          assert(actual == expected)
+        }
       }
     )
   )
